@@ -24,7 +24,7 @@ This project aims to develop an end-to-end NFC-based authentication system. User
 
 1. **Clone the Repository**:
    ```sh
-   git clone https://github.com/yourusername/nfc-authentication-system.git
+   git clone https://github.com/medTX94/GX-AUTH-NFC.git
    ```
 2. **Set Up Docker Environment**:
    - Navigate to the project directory.
