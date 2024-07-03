@@ -1,3 +1,4 @@
 Flask
+Flask-CORS
 PyJWT
 psycopg2-binary

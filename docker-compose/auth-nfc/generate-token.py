@@ -2,7 +2,7 @@ import jwt
 import datetime
 import psycopg2
 
-SECRET_KEY = 'your-256-bit-secret'
+SECRET_KEY = 'your_secret_key'
 
 def create_token(user):
     payload = {
