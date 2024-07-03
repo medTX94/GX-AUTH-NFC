@@ -1,3 +1,16 @@
 psql -U user -d mydatabase
 
-INSERT INTO users (username, token) VALUES ('user1', 'your_jwt_token_here');
+INSERT INTO users (username, token) VALUES ('Jhon Doe', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiZW1haWwiOiJqb2huLmRvZUBlc3RpYW0uY29tIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE3Mjc3NDA3OTksInJvbGUiOiJlbXBsb3llZSJ9.CzHm8hlLNQOnakPR-EMVwXIorMM0eUW15yxJCFICtXc');
+
+
+curl -X POST http://nfc.bouchlaghem.com:5000/authenticate -H "Content-Type: application/json" -d '{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiZW1haWwiOiJqb2huLmRvZUBlc3RpYW0uY29tIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjE3Mjc3NDA3OTksInJvbGUiOiJlbXBsb3llZSJ9.CzHm8hlLNQOnakPR-EMVwXIorMM0eUW15yxJCFICtXc"}'
+
+Test User Registration:
+Use curl or a tool like Postman to register a new user.
+
+
+
+curl -X POST http://nfc.bouchlaghem.com/register -H "Content-Type: application/json" -d '{"username": "test", "password": "test"}'
+
+
+curl -X POST http://nfc.bouchlaghem.com/login -H "Content-Type: application/json" -d '{"username": "testuser", "password": "testpassword"}'
