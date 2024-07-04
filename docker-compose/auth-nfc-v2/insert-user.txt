@@ -1,0 +1,6 @@
+psql -U user -d mydatabase
+
+
+
+
+INSERT INTO users (username, token) VALUES ('user1', 'your_jwt_token_here');
