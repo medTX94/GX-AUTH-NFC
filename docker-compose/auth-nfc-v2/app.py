@@ -1,22 +1,17 @@
-from flask import Flask, request, jsonify, send_from_directory, session, redirect, url_for
+from flask import Flask, request, jsonify, send_from_directory, redirect, url_for
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 import jwt
 import psycopg2
 import datetime
 import os
-import logging
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # Replace with your actual secret key
 CORS(app, resources={r"/*": {"origins": "*"}})  # Allow all origins
 
 bcrypt = Bcrypt(app)
 
 SECRET_KEY = 'your-256-bit-secret'  # Ensure this matches the secret used to generate the JWT
-
-# Configure logging
-logging.basicConfig(level=logging.DEBUG)
 
 def get_db_connection():
     connection = psycopg2.connect(
@@ -84,31 +79,22 @@ def authenticate():
     try:
         data = request.json
         token = data.get('token')
-        logging.debug(f"Received Token: {token}")  # Log the received token
         decoded = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
         user = get_user_by_token(token)
         if user:
-            session['username'] = user[0]
-            logging.debug(f"Authenticated User: {user[0]}")  # Log the authenticated user
-            return jsonify({"success": True, "message": "User authenticated", "user": user[0]}), 200
+            return jsonify({"message": "User authenticated", "user": user[0]}), 200
         else:
-            logging.debug("Invalid user")  # Log invalid user
-            return jsonify({"success": False, "message": "Invalid user"}), 401
+            return jsonify({"message": "Invalid user"}), 401
     except jwt.ExpiredSignatureError:
-        logging.error("Token expired")  # Log token expired error
-        return jsonify({"success": False, "message": "Token expired"}), 401
+        return jsonify({"message": "Token expired"}), 401
     except jwt.InvalidTokenError:
-        logging.error("Invalid token")  # Log invalid token error
-        return jsonify({"success": False, "message": "Invalid token"}), 401
+        return jsonify({"message": "Invalid token"}), 401
     except Exception as e:
-        logging.error(f"Bad request: {str(e)}")  # Log any other exceptions
-        return jsonify({"success": False, "message": "Bad request", "error": str(e)}), 400
+        return jsonify({"message": "Bad request", "error": str(e)}), 400
 
 @app.route('/home')
 def home():
-    if 'username' in session:
-        return f"Welcome {session['username']}! You have successfully logged in at {datetime.datetime.now()}"
-    return redirect(url_for('index'))
+    return send_from_directory('static', 'home.html')
 
 @app.route('/')
 def index():

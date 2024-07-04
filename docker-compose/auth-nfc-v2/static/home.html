@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .welcome-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            background: #f0f0f0;
+        }
+
+        .welcome-message {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .welcome-image {
+            width: 200px;
+            height: 200px;
+            background: url('welcome.png') no-repeat center center;
+            background-size: contain;
+            margin-bottom: 20px;
+        }
+
+        .congratulations {
+            font-size: 18px;
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-container">
+        <div class="welcome-message">Welcome, <span id="username"></span>!</div>
+        <div class="welcome-image"></div>
+        <div class="congratulations">Congratulations, you have successfully logged in!</div>
+        <div class="group-message">Group 10 is welcoming you!</div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const username = urlParams.get('username');
+            document.getElementById('username').textContent = username;
+        });
+    </script>
+</body>
+</html>

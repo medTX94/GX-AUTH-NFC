@@ -20,19 +20,15 @@ document.addEventListener("DOMContentLoaded", function () {
         event.preventDefault();
         const username = document.getElementById("username").value;
         const password = document.getElementById("password").value;
-        // Handle username and password authentication
         authenticateUser(username, password);
     });
 
     scanNfcBtn.addEventListener("click", function () {
-        // Handle NFC authentication
         authenticateNfc();
     });
 
     function authenticateUser(username, password) {
-        // Example function to handle username and password authentication
-        // Replace with your own authentication logic
-        fetch("http://localhost:5000/login", {  // Use your server IP or hostname
+        fetch("/login", {  // Use your server IP or hostname
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -43,6 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(data => {
             if (data.success) {
                 alert("Authentication successful!");
+                window.location.href = '/home';
             } else {
                 alert("Authentication failed!");
             }
@@ -53,8 +50,44 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function authenticateNfc() {
-        // Example function to handle NFC authentication
-        // Replace with your own NFC authentication logic
-        alert("NFC authentication is not implemented in this example.");
+        if ('NDEFReader' in window) {
+            const ndef = new NDEFReader();
+            ndef.scan().then(() => {
+                document.getElementById('nfcForm').innerHTML = "<p>Scan your NFC card...</p>";
+                ndef.onreading = event => {
+                    const decoder = new TextDecoder();
+                    for (const record of event.message.records) {
+                        const payload = decoder.decode(record.data);
+                        sendNfcToken(payload);
+                    }
+                };
+            }).catch(error => {
+                alert(`Error: ${error}`);
+            });
+        } else {
+            alert("NFC not supported on this device");
+        }
+    }
+
+    function sendNfcToken(token) {
+        fetch("/authenticate", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ token })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("NFC Authentication successful!");
+                window.location.href = '/home';
+            } else {
+                alert("NFC Authentication failed!");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
     }
 });
